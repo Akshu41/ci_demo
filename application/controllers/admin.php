@@ -25,14 +25,23 @@ class Admin extends MY_Controller
 					$customer_data = $this->input->post();
 					unset($customer_data['submit']);
 					$this->load->model('usersmodel','userlist');
-					$this->userlist->add_customers($customer_data);
-					 return redirect('admin/dashboard'); 
-				}	
+					$res =  $this->userlist->add_customers($customer_data);
+					if($res==true)
+					{
+					$this->session->set_flashdata('success', "Customer added"); 
+					}
 					else
 					{
-						$this->load->view('add_customer'); 
-					}
+					$this->session->set_flashdata('error', "Customer is not added");
 					
+					}	
+					 return redirect('admin/dashboard'); 
+			}
+		else
+		{
+			$this->load->view('add_customer'); 
+		}
+		
 		
 	}
 
@@ -58,6 +67,19 @@ class Admin extends MY_Controller
 					unset($update_data['submit']);
 					$this->load->model('usersmodel','update_user');
 					$this->update_user->update_customer($id,$update_data);
+
+					$res = $this->update_user->update_customer($id,$update_data);
+					if($res==true)
+					{
+					$this->session->set_flashdata('success', "Customer updated "); 
+					}
+					else
+					{
+					$this->session->set_flashdata('error', "Customer is not updated ");
+					
+					}	
+
+
 					return redirect('admin/dashboard');
 			}	
 			else
@@ -80,14 +102,29 @@ class Admin extends MY_Controller
 
 			$this->form_validation->set_rules('c_rem_date','Reminder Date', 'required');
 			$this->form_validation->set_rules('c_remarkes','Remark', 'required');
+
 			
 			if ( $this->form_validation->run()) {		
 					$update_remark = $this->input->post();
 					unset($update_remark['submit']);
 					$this->load->model('usersmodel','update_remark');
 					$this->update_remark->update_remarks($id,$update_remark);
+
+					$res = $this->update_remark->update_remarks($id,$update_remark);
+					if($res==true)
+					{
+					$this->session->set_flashdata('success', "Remarks and Reminder updated "); 
+					}
+					else
+					{
+					$this->session->set_flashdata('error', "Remarks and Reminder is not updated ");
+					
+					}	
 					return redirect('admin/dashboard');
 			}	
+
+
+
 			else
 			{
 				$this->load->view('add_remark'); 

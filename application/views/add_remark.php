@@ -12,9 +12,12 @@
             </div>
             <div class="card-body">
              <?php  $id=$add_remark->c_user_id;
+                    $visit=$add_remark->c_visit;
+                    $visit++;
+                    
              echo  form_open("admin/update_remark/{$id}",['class'=>'user']); ?>
                 	
-     
+                 <input type="hidden" name="c_visit" value="<?php echo $visit; ?>">
                 
 
                  <div class="form-group row">
@@ -56,7 +59,7 @@
 
                 <div class="form-group row">
                   <div class="col-sm-8">
-                      <label class="label label-default">Remarkes </label>
+                      <label class="label label-default">Remarks </label>
                      <?php  echo  form_input(['name'=>'c_remarkes', 'class'=>'form-control form-control-user' , 'placeholder'=>'', 'value'=>set_value('c_remarkes')]); ?>
                      <div class="error"> <?php echo form_error('c_remarkes');  ?></div>
 

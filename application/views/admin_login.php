@@ -41,7 +41,7 @@
                   
                     <?php echo  form_open('login/admin_login',['class'=>'user']); ?>
 
-                    <?php if ($error = $this->session->set_flashdata('login_failed')); {?>
+                    <?php if ($error = $this->session->flashdata('login_failed')); {?>
                       
                     
                     

@@ -10,7 +10,9 @@
             <div class="card-body">
              <?php echo  form_open('admin/add_customer',['class'=>'user']); ?>
                 	
- 
+                 
+             <input type="hidden" name="c_visit" value="1">
+
                 <div class="form-group row">
                   <div class="col-sm-4 mb-3 mb-sm-0">
                     <label class="label label-default">Name</label>

@@ -16,6 +16,23 @@
                   </a>
          <br>
          <br>
+         <?php if( $success = $this->session->flashdata('success')){?>
+
+              <div class="alert alert-success alert-dismissible fade show" role="alert">
+              <strong>Success!</strong> <?php echo $success ?>
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+              </button>
+              </div>
+           
+            <?php } elseif ($fail = $this->session->flashdata('error')) { ?>
+             <div class="alert alert-danger alert-dismissible fade show" role="alert">
+              <strong>Failed!</strong> <?php echo $error ?>
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+              </button>
+              </div>
+            <?php }?>
 
           <!-- DataTales Example -->
           <div class="card shadow mb-4">
@@ -76,10 +93,10 @@
                     <td><?php echo $userlist->mobile;  ?></td>
                     <td><?php echo $userlist->c_email;  ?></td>
                     <td><?php echo $userlist->c_vehicle_no;  ?></td>
-                    <td><?php echo $userlist->c_vehicle_type  ?></td>
+                    <td><?php echo $userlist->c_vehicle_type;  ?></td>
                     <td class="grid-item" data-date="<?php echo $userlist->c_rem_date;  ?>"><?php echo $userlist->c_rem_date;  ?></td>
                     <td><?php echo $userlist->c_last_fill_date;  ?></td>
-                    <td>1</td>
+                    <td><?php echo $userlist->c_visit;  ?></td>
                     <td><?php echo $userlist->c_remarkes;  ?></td>
                     <td><?php $id = $userlist->c_user_id; ?>
                       <?php echo anchor("admin/edit_customer/{$id}",'Edit','class="btn btn-info btn-block"'); ?></td>
