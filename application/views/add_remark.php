@@ -19,15 +19,19 @@
 
                  <div class="form-group row">
                   <div class="col-sm-4">
-                    <label class="label label-default">Date</label>
+                    <label class="label label-default">Last Filled Date</label>
                     <?php $data_date_last = array('type' => 'date','name' => 'c_last_fill_date','class' => 'form-control form-control-user','placeholder' => 'Last Filled Date','value'=>set_value( '' , date("Y-m-d")));
                       echo form_input($data_date_last); ?>
                       <div class="error"> <?php echo form_error('c_last_fill_date');  ?></div>
                     <!-- <input type="text" class="form-control form-control-user" name="c_last_fill_date" placeholder="Last Filled Date"> -->
                   </div>
                   <div class="col-sm-4">
+                     <?php 
+                    $last_date= $add_remark->c_last_fill_date;
+                    $Date = date("Y-m-d");
+                     $rem_date =  date('Y-m-d', strtotime($Date. ' + 90 days')); ?>
                      <label class="label label-default">Reminder Date</label>
-                     <?php $data_date_rem = array('type' => 'date','name' => 'c_rem_date','class' => 'form-control form-control-user','placeholder' => 'Reminder Date','value'=>set_value('c_rem_date'));
+                     <?php $data_date_rem = array('type' => 'date','name' => 'c_rem_date','class' => 'form-control form-control-user','placeholder' => 'Reminder Date','value'=>set_value('c_rem_date' , $rem_date));
                       echo form_input($data_date_rem); ?>
                        <div class="error"> <?php echo form_error('c_rem_date');  ?></div>
 

@@ -40,8 +40,8 @@
                        <div class="error"> <?php echo form_error('c_email');  ?></div>
                   </div>
                   <div class="col-sm-4">
-                    <label class="label label-default">Regitration Date</label>
-                    <?php $data_reg_date = array('type' => 'date','name' => 'c_reg_date','class' => 'form-control form-control-user','placeholder' => '','value'=>set_value('c_reg_date'));
+                    <label class="label label-default">Registration Date</label>
+                    <?php $data_reg_date = array('type' => 'date','name' => 'c_reg_date','class' => 'form-control form-control-user','placeholder' => '','value'=>set_value( '' , date("Y-m-d")));
                       echo form_input($data_reg_date); ?>
 
                     <!-- <input type="text" class="form-control form-control-user" name="c_reg_date" placeholder="Vehicle no."> -->
@@ -118,30 +118,26 @@ echo form_dropdown('c_vehicle_type', $vehicle_options, 'Vehicle Type' ,'class="f
                  <div class="form-group row">
                   <div class="col-sm-4">
                     <label class="label label-default">Last Filled Date</label>
-                    <?php $data_date_last = array('type' => 'date','name' => 'c_last_fill_date','class' => 'form-control form-control-user','placeholder' => 'Last Filled Date','value'=>set_value('c_last_fill_date'));
+                    <?php $data_date_last = array('type' => 'date','name' => 'c_last_fill_date','class' => 'form-control form-control-user','placeholder' => 'Last Filled Date','value'=>set_value( '' , date("Y-m-d")));
                       echo form_input($data_date_last); ?>
 
                     <!-- <input type="text" class="form-control form-control-user" name="c_last_fill_date" placeholder="Last Filled Date"> -->
                   </div>
                   <div class="col-sm-4">
+                    <?php 
+                    $Date = date("Y-m-d");
+                    $rem_date =  date('Y-m-d', strtotime($Date. ' + 90 days')); ?>
+
                      <label class="label label-default">Reminder Date</label>
-                     <?php $data_date_rem = array('type' => 'date','name' => 'c_rem_date','class' => 'form-control form-control-user','placeholder' => 'Reminder Date','value'=>set_value('c_rem_date'));
+                     <?php $data_date_rem = array('type' => 'date','name' => 'c_rem_date','class' => 'form-control form-control-user','placeholder' => 'Reminder Date','value'=>set_value('' , $rem_date));
                       echo form_input($data_date_rem); ?>
 
                     <!-- <input type="text" class="form-control form-control-user" name="c_rem_date" placeholder="Reminder"> -->
                   </div>
                   <div class="col-sm-4">
-                     
-                      <label class="label label-default"> </label>
-                    <?php $reset = array(
-                                'name' => 'Reset',
-                                'class' => 'btn-primary btn-user btn-block',
-                                'value' => 'true',
-                                'type' => 'reset',
-                                'content' => 'Reset'
-                            );
 
-                              echo form_button($reset); ?>
+                    <a class= " btn btn-primary btn-user btn-block"  href="<?php echo base_url("/admin/dashboard")?>"> Cancel</a>
+
 
                     <!-- <input type="text" class="form-control form-control-user" name="c_rem_date" placeholder="Reminder"> -->
                   </div>
@@ -149,7 +145,7 @@ echo form_dropdown('c_vehicle_type', $vehicle_options, 'Vehicle Type' ,'class="f
 
                 <div class="form-group row">
                   <div class="col-sm-8">
-                      <label class="label label-default">Remarkes </label>
+                      <label class="label label-default">Remarks </label>
                      <?php  echo  form_input(['name'=>'c_remarkes', 'class'=>'form-control form-control-user' , 'placeholder'=>'', 'value'=>set_value('c_remarkes')]); ?>
                      
 

@@ -14,7 +14,7 @@
                 <div class="form-group row">
                   <div class="col-sm-8">
                      <label class="label label-default">Mobile</label>
-                    <?php echo  form_input(['name'=>'mobile', 'class'=>'form-control form-control-user' , 'placeholder'=>'', 'value'=>set_value('mobile', $single_sms->mobile)]); ?>
+                    <?php echo  form_input(['name'=>'mobile', 'class'=>'form-control form-control-user' ,'readonly' => 'readonly' ,'placeholder'=>'', 'value'=>set_value('mobile', $single_sms->mobile)]); ?>
                   </div>
                 </div>
 

@@ -36,7 +36,7 @@
               <div class="col-lg-12">
                 <div class="p-5">
                   <div class="text-center">
-                    <h1 class="h4 text-gray-900 mb-4">Admin  Login!</h1>
+                    <h1 class="h4 text-gray-900 mb-4">Admin</h1>
                   </div>
                   
                     <?php echo  form_open('login/admin_login',['class'=>'user']); ?>
@@ -47,7 +47,7 @@
                     
            <?php  }?>       <div class="form-group">
 
-                     <?php echo  form_input(['name'=>'username', 'class'=>'form-control form-control-user', 'id'=>'fexampleInputEmail' , 'placeholder'=>'Enter Username', 'value'=>set_value('username')]); ?>
+                     <?php echo  form_input(['name'=>'username', 'class'=>'form-control form-control-user', 'id'=>'fexampleInputEmail' , 'placeholder'=>'Username', 'value'=>set_value('username')]); ?>
                       <div class="error" >
                         <?php echo form_error('username');  ?>
                       </div>

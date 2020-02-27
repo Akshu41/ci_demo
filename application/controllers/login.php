@@ -24,7 +24,7 @@ class Login extends MY_Controller
 			$this->load->model('loginmodel');
 			$login_id = $this->loginmodel->login_valid($username,$password);
 			if ($login_id) {
-				$this->session->set_userdata('user_id',$login_id);
+				$this->session->set_userdata('id',$login_id);
 				 return redirect('admin/dashboard');
 				}
 			else

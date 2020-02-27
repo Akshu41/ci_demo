@@ -43,6 +43,10 @@
                     <label class="label label-default">Regitration Date</label>
                     <?php $data_reg_date = array('type' => 'date','name' => 'c_reg_date','class' => 'form-control form-control-user','placeholder' => '', 'value'=>set_value('c_reg_date', $edit_customer->c_reg_date));
                       echo form_input($data_reg_date); ?>
+                                    
+  
+
+
 
                     <!-- <input type="text" class="form-control form-control-user" name="c_reg_date" placeholder="Vehicle no."> -->
                   </div>
@@ -119,13 +123,21 @@ echo form_dropdown('c_vehicle_type', $vehicle_options, $edit_customer->c_vehicle
                   <div class="col-sm-4">
                     <label class="label label-default">Last Filled Date</label>
                     <?php $data_date_last = array('type' => 'date','name' => 'c_last_fill_date','class' => 'form-control form-control-user','placeholder' => 'Last Filled Date', 'value'=>set_value('c_last_fill_date', $edit_customer->c_last_fill_date));
-                      echo form_input($data_date_last); ?>
+                      echo form_input($data_date_last); 
 
+                       
+                         ?>
+                    
                     <!-- <input type="text" class="form-control form-control-user" name="c_last_fill_date" placeholder="Last Filled Date"> -->
                   </div>
                   <div class="col-sm-4">
+
+                     <?php 
+                    $last_date= $edit_customer->c_last_fill_date;
+                    $Date = date("Y-m-d");
+                    $rem_date =  date('Y-m-d', strtotime($Date. ' + 90 days')); ?>
                      <label class="label label-default">Reminder Date</label>
-                     <?php $data_date_rem = array('type' => 'date','name' => 'c_rem_date','class' => 'form-control form-control-user','placeholder' => 'Reminder Date', 'value'=>set_value('mobile', $edit_customer->c_rem_date));
+                     <?php $data_date_rem = array('type' => 'date','name' => 'c_rem_date','class' => 'form-control form-control-user','placeholder' => 'Reminder Date', 'value'=>set_value('c_rem_date', $rem_date));
                       echo form_input($data_date_rem); ?>
 
                     <!-- <input type="text" class="form-control form-control-user" name="c_rem_date" placeholder="Reminder"> -->

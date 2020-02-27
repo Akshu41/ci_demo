@@ -27,18 +27,15 @@
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                   <thead>
                     <tr>
-                      <th>Date</th>
+                     
                       <th>Name</th>
                       <th>Mobile No.</th>
-                      <th>Date of Birth</th>
-                      <th>Religion</th>
                       <th>Email</th>
                       <th>Vehicle No.</th>
                       <th>Vehicle Type</th>
                       <th>Reminder Date</th>
                       <th>Last Filled Date</th>
                       <th>Visits</th>
-                      <th>MSG’s</th>
                       <th>Remarks</th>
                       <th>Edit</th>
                       <th>Send</th>
@@ -48,18 +45,15 @@
                   </thead>
                   <tfoot>
                     <tr>
-                       <th>Date</th>
+                      
                       <th>Name</th>
                       <th>Mobile No.</th>
-                      <th>Date of Birth</th>
-                      <th>Religion</th>
                       <th>Email</th>
                       <th>Vehicle No.</th>
                       <th>Vehicle Type</th>
                       <th>Reminder Date</th>
                       <th>Last Filled Date</th>
                       <th>Visits</th>
-                      <th>MSG’s</th>
                       <th>Remarks</th>
                       <th>Edit</th>
                       <th>Send</th>
@@ -78,18 +72,14 @@
               
            
                       <tr>
-                    <td><?php echo $userlist->c_reg_date;  ?></td>
                     <td><?php echo $userlist->c_name;  ?></td>
                     <td><?php echo $userlist->mobile;  ?></td>
-                    <td><?php echo $userlist->c_dob;  ?></td>
-                    <td><?php echo $userlist->c_religion;  ?></td>
                     <td><?php echo $userlist->c_email;  ?></td>
                     <td><?php echo $userlist->c_vehicle_no;  ?></td>
                     <td><?php echo $userlist->c_vehicle_type  ?></td>
                     <td class="grid-item" data-date="<?php echo $userlist->c_rem_date;  ?>"><?php echo $userlist->c_rem_date;  ?></td>
                     <td><?php echo $userlist->c_last_fill_date;  ?></td>
                     <td>1</td>
-                    <td>MSG</td>
                     <td><?php echo $userlist->c_remarkes;  ?></td>
                     <td><?php $id = $userlist->c_user_id; ?>
                       <?php echo anchor("admin/edit_customer/{$id}",'Edit','class="btn btn-info btn-block"'); ?></td>
