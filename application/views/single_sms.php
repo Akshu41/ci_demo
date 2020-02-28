@@ -42,10 +42,10 @@
 
 @$msg = $_POST['single_msg'];
 $msg1 = json_encode($msg);
- echo $msg1;
+$msg1;
 @$mobile = $single_sms->mobile;
   $mobile_no = json_encode($mobile);
- echo $mobile_no;
+$mobile_no;
 
 
  if(isset($_POST['submit'])){
@@ -63,7 +63,7 @@ $msg1 = json_encode($msg);
         CURLOPT_SSL_VERIFYHOST => 0,
         CURLOPT_SSL_VERIFYPEER => 0,
         CURLOPT_HTTPHEADER => array(
-          "authkey: 317629AFIKHndv85e415d4bP1",
+          "authkey: ",
           "content-type: application/json"
         ),
       ));
