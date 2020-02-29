@@ -58,6 +58,7 @@ class Usersmodel extends CI_Model
 	}
 
 
+
 	
 	public function delete_customer($id)
 		{		
@@ -70,10 +71,18 @@ class Usersmodel extends CI_Model
 	
 	{		
 
-			$q = $this->db->select('mobile')->where('c_user_id' , $id )->get('tbl_cust');
+			$q = $this->db->select('mobile , c_user_id , c_rem_date ' )->where('c_user_id' , $id )->get('tbl_cust');
 		return $q->row();
 
 	}
+
+
+	public function storeSingle_sms($id , array $data)
+		{
+			return $this->db->insert('messages' , $data );
+		}	
+
+
 
 	public function bulk_sms_list()
 	{

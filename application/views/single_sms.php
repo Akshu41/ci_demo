@@ -8,7 +8,12 @@
               <h6 class="m-0 font-weight-bold text-primary">Send Message to Customer</h6>
             </div>
             <div class="card-body">
-              <form action="#"  class="user" method="POST">
+
+              <?php $id=$single_sms->c_user_id;
+                    $c_rem_date =$single_sms->c_rem_date;
+
+
+              echo  form_open("admin/Send_single/{$id}",['class'=>'user']); ?>                
                 	
  
                 <div class="form-group row">
@@ -17,6 +22,9 @@
                     <?php echo  form_input(['name'=>'mobile', 'class'=>'form-control form-control-user' ,'readonly' => 'readonly' ,'placeholder'=>'', 'value'=>set_value('mobile', $single_sms->mobile)]); ?>
                   </div>
                 </div>
+
+                <input type="hidden" name="c_rem_date" value="<?php echo $c_rem_date ?>">
+                <input type="hidden" name="cust_id" value="<?php echo $id ?>">
 
                  <div class="form-group row">
                   <div class="col-sm-8">
@@ -38,52 +46,6 @@
           </div>
 
 
-  <?php
-
-@$msg = $_POST['single_msg'];
-$msg1 = json_encode($msg);
-$msg1;
-@$mobile = $single_sms->mobile;
-  $mobile_no = json_encode($mobile);
-$mobile_no;
-
-
- if(isset($_POST['submit'])){
-      $curl = curl_init();
-
-      curl_setopt_array($curl, array(
-        CURLOPT_URL => "https://api.msg91.com/api/v2/sendsms",
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_ENCODING => "",
-        CURLOPT_MAXREDIRS => 10,
-        CURLOPT_TIMEOUT => 30,
-        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-        CURLOPT_CUSTOMREQUEST => "POST",
-        CURLOPT_POSTFIELDS => "{ \"sender\": \"SOCKET\", \"route\": \"4\", \"country\": \"91\", \"sms\": [ { \"message\": ".$msg1.", \"to\": [".$mobile."] } ] }",
-        CURLOPT_SSL_VERIFYHOST => 0,
-        CURLOPT_SSL_VERIFYPEER => 0,
-        CURLOPT_HTTPHEADER => array(
-          "authkey: ",
-          "content-type: application/json"
-        ),
-      ));
-
-    $response = curl_exec($curl);
-    $err = curl_error($curl);
-    curl_close($curl);
-
-            
-
-
-      if ($err) {
-            echo "cURL Error #:" . $err;
-          } else {
-            echo $response;
-          }
-
-  }
-      
-
-  ?>
+  
 
 <?php include 'footer.php';  ?>

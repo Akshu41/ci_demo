@@ -16,10 +16,10 @@
                   </a>
          <br>
          <br>
-         <?php if( $success = $this->session->flashdata('success')){?>
+         <?php if( $success = $this->session->flashdata('success') || $msg_success = $this->session->flashdata('success_send')) {?>
 
               <div class="alert alert-success alert-dismissible fade show" role="alert">
-              <strong>Success!</strong> <?php echo $success ?>
+              <strong>Success!</strong> <?php echo $success;   echo  $msg_success;?>
               <button type="button" class="close" data-dismiss="alert" aria-label="Close">
               <span aria-hidden="true">&times;</span>
               </button>

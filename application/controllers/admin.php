@@ -142,7 +142,10 @@ class Admin extends MY_Controller
 		$single_sms = $this->single_sms->single_sms($id);
 		$this->load->view('single_sms' , ['single_sms' => $single_sms]);
 
+
+
 	}
+
 
 	public function bulk_sms()
 	{
@@ -169,7 +172,92 @@ class Admin extends MY_Controller
 		return redirect('admin/dashboard');
 
 	}
+	public function Send_single($id)
+	{
+		$mobile = $this->input->post('mobile');
+		$message = $this->input->post('single_msg');
+		$submit = $this->input->post('submit');
+		unset($submit);
+		$data = array(
+			'mobile' => $this->input->post('mobile'),
+			'message' => $this->input->post('single_msg'),
+			'cust_id' => $this->input->post('cust_id'),
+			'reminder_date' => $this->input->post('c_rem_date')
+		);
+		print_r($data);
+		$msg1 = json_encode($message);
+		$mobile_no = json_encode($mobile);
 
+
+
+		if(isset($_POST['submit'])){
+      $curl = curl_init();
+
+      curl_setopt_array($curl, array(
+        CURLOPT_URL => "https://api.msg91.com/api/v2/sendsms",
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => "",
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 30,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => "POST",
+        CURLOPT_POSTFIELDS => "{ \"sender\": \"SOCKET\", \"route\": \"4\", \"country\": \"91\", \"sms\": [ { \"message\": ".$msg1.", \"to\": [".$mobile."] } ] }",
+        CURLOPT_SSL_VERIFYHOST => 0,
+        CURLOPT_SSL_VERIFYPEER => 0,
+        CURLOPT_HTTPHEADER => array(
+          "authkey: ",
+          "content-type: application/json"
+        ),
+      ));
+
+    $response = curl_exec($curl);
+    $err = curl_error($curl);
+    curl_close($curl);
+
+    $json = json_decode($response, true);
+
+    if($json['code'] = '106')
+    {
+    	$json['message'];
+    }
+    elseif ($json['type'] = 'success') {
+    	$json['message'];
+    }
+    else{
+    	$json = " not send";
+    }
+
+            
+
+
+      if ($err) {
+            echo "cURL Error #:" . $err;
+          } else {
+
+          	$this->load->model('usersmodel','single_sms1');
+			
+			$res1 = $this->single_sms1->storeSingle_sms($id , $data);
+					if($res1==true)
+					{
+					$this->session->set_flashdata('success_send', $json['message']); 
+					}
+					else
+					{
+					$this->session->set_flashdata('error_send', $response);
+					
+					}	
+			return redirect('admin/dashboard');
+           
+          }
+
+  }
+      
+
+
+		
+
+		
+	}
 
 
 	public function _construct()
