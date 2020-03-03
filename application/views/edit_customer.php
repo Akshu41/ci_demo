@@ -153,7 +153,7 @@ echo form_dropdown('c_vehicle_type', $vehicle_options, $edit_customer->c_vehicle
                                 'content' => 'Reset'
                             );
 
-                              echo form_button($reset); ?>
+                              // echo form_button($reset); ?>
 
                     <!-- <input type="text" class="form-control form-control-user" name="c_rem_date" placeholder="Reminder"> -->
                   </div>
@@ -161,7 +161,7 @@ echo form_dropdown('c_vehicle_type', $vehicle_options, $edit_customer->c_vehicle
 
                 <div class="form-group row">
                   <div class="col-sm-8">
-                      <label class="label label-default">Remarkes </label>
+                      <label class="label label-default">Remarks </label>
                      <?php  echo  form_input(['name'=>'c_remarkes', 'class'=>'form-control form-control-user' , 'placeholder'=>'', 'value'=>set_value('c_remarkes', $edit_customer->c_remarkes)]); ?>
                      
 
@@ -171,7 +171,7 @@ echo form_dropdown('c_vehicle_type', $vehicle_options, $edit_customer->c_vehicle
                   </div>
                   <div class="col-sm-4">
                      <label class="label label-default"></label>
-                    <?php echo  form_submit(['name'=>'submit', 'value'=>'Submit', 'class'=>'btn btn-primary btn-user btn-block']); ?>
+                    <?php echo  form_submit(['name'=>'submit', 'value'=>'Edit Customer', 'class'=>'btn btn-primary btn-user btn-block']); ?>
                     <!-- <input type="submit" class="btn btn-primary btn-user btn-block" name="submit" value="submit"> -->
                   </div>
                 </div>

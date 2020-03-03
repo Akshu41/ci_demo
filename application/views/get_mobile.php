@@ -32,12 +32,12 @@ $no_obj = json_encode(@$a_arr);
                  <div class="form-group row">
                   <div class="col-sm-8">
                     <label class="label label-default">Message</label>
-                     <?php echo form_textarea(['name'=>'message', 'class'=>'form-control form-control-user msg-text-area' , 'placeholder'=>'', 'value'=>set_value('message')]); ?>
+                     <?php echo form_textarea(['name'=>'message', 'class'=>'form-control form-control-user msg-text-area' , 'placeholder'=>'', 'value'=>set_value('message', 'Dear Customer, Your Oil Refill is due. Please visit and refill today. Thanks!')]); ?>
                     </div>
 
                     <div class="col-sm-4">
                         <ul class="list-group text-center">
-                          <li class="list-group-item active">MOBILE NUMBER</li>
+                          <li class="list-group-item active">Customer's Mobile No. List</li>
                        <?php foreach ($get_mobile as $mobile) { ?>
                        
                           <li class="list-group-item"> <?php echo $mobile->mobile?></li>

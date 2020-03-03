@@ -47,19 +47,19 @@
       </li>
 
       <!-- Divider -->
-      <hr class="sidebar-divider">
+      <!-- <hr class="sidebar-divider"> -->
 
       <!-- Heading -->
-      <div class="sidebar-heading">
+      <!-- <div class="sidebar-heading">
         Customer Entry
-      </div>
+      </div> -->
 
       <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item <?php if($this->uri->segment(2)=="add_customer"){echo "active";} ?> ">
+      <!-- <li class="nav-item <?php if($this->uri->segment(2)=="add_customer"){echo "active";} ?> ">
         <a class="nav-link collapsed" title="Add Customer" href="<?php echo base_url("/admin/add_customer")?>">
           <i class="fas fa-users"></i>
           <span>Add Customer</span>
-        </a>
+        </a> -->
         <!-- <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Custom Components:</h6>
@@ -67,7 +67,7 @@
             <a class="collapse-item" href="cards.html">Cards</a>
           </div>
         </div> -->
-      </li>
+      <!-- </li> -->
 
       <!-- Nav Item - Utilities Collapse Menu -->
      <!--  <li class="nav-item">
@@ -86,7 +86,7 @@
         </div>
       </li>  -->
 
-    <!--   <li class="nav-item <?php if($this->uri->segment(2)=="bulk_sms"){echo "active";} ?> ">
+      <!-- <li class="nav-item <?php if($this->uri->segment(2)=="bulk_sms"){echo "active";} ?> ">
         <a class="nav-link collapsed" title="Add Customer"  href="<?php echo base_url("/admin/bulk_sms")?>" >
           <i class="fas fa-sms"></i>
           <span>Bulk SMS</span>
@@ -125,7 +125,7 @@
      <li class="nav-item <?php if($this->uri->segment(2)=="get_mobile"){echo "active";} ?>  ">
         <a class="nav-link" href="<?php echo base_url("/admin/get_mobile")?>">
           <i class="fas fa-fw fa-chart-area"></i>
-          <span>Reminder SMS</span></a>
+          <span>Today's Reminders</span></a>
       </li> 
 
       <!-- Nav Item - Tables -->

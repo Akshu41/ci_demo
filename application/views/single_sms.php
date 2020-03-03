@@ -5,7 +5,7 @@
             <div class="card-header py-3">
 
 
-              <h6 class="m-0 font-weight-bold text-primary">Send Message to Customer</h6>
+              <h6 class="m-0 font-weight-bold text-primary">Send Message</h6>
             </div>
             <div class="card-body">
 
