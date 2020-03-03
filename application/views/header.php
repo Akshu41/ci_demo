@@ -86,12 +86,12 @@
         </div>
       </li>  -->
 
-      <li class="nav-item <?php if($this->uri->segment(2)=="bulk_sms"){echo "active";} ?> ">
+    <!--   <li class="nav-item <?php if($this->uri->segment(2)=="bulk_sms"){echo "active";} ?> ">
         <a class="nav-link collapsed" title="Add Customer"  href="<?php echo base_url("/admin/bulk_sms")?>" >
           <i class="fas fa-sms"></i>
           <span>Bulk SMS</span>
         </a>
-      </li>
+      </li> -->
 
       <!-- Divider -->
       <hr class="sidebar-divider">
