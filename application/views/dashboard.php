@@ -16,10 +16,12 @@
                   </a>
          <br>
          <br>
-         <?php if( $success = $this->session->flashdata('success') || $msg_success = $this->session->flashdata('success_send')) {?>
+
+     <?php if(   $this->session->flashdata('success') || @$msg_success = $this->session->flashdata('success_send')){
+                  $success = $this->session->flashdata('success');?>
 
               <div class="alert alert-success alert-dismissible fade show" role="alert">
-              <strong>Success!</strong> <?php echo $success;   echo  $msg_success;?>
+              <strong>Success!</strong> <?php echo $success;   echo  @$msg_success;?>
               <button type="button" class="close" data-dismiss="alert" aria-label="Close">
               <span aria-hidden="true">&times;</span>
               </button>
@@ -27,7 +29,7 @@
            
             <?php } elseif ($fail = $this->session->flashdata('error')) { ?>
              <div class="alert alert-danger alert-dismissible fade show" role="alert">
-              <strong>Failed!</strong> <?php echo $error ?>
+              <strong>Failed!</strong> <?php echo $fail ?>
               <button type="button" class="close" data-dismiss="alert" aria-label="Close">
               <span aria-hidden="true">&times;</span>
               </button>

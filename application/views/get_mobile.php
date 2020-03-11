@@ -38,10 +38,13 @@ $no_obj = json_encode(@$a_arr);
                     <div class="col-sm-4">
                         <ul class="list-group text-center">
                           <li class="list-group-item active">Customer's Mobile No. List</li>
-                       <?php foreach ($get_mobile as $mobile) { ?>
+                       <?php 
+                            if($get_mobile){
+
+                            foreach ($get_mobile as $mobile) { ?>
                        
                           <li class="list-group-item"> <?php echo $mobile->mobile?></li>
-                <?php } ?>
+                <?php }} else{echo '<li class="list-group-item"> No Reminder Date For today </li> ';} ?>
               </ul>
                           
                         </ul>

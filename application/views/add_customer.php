@@ -1,4 +1,6 @@
-<?php include 'header.php';  ?>
+<?php include 'header.php';  
+
+?>
 
 <div class="container-fluid">
 	<div class="card shadow mb-4">
@@ -153,7 +155,7 @@ echo form_dropdown('c_vehicle_type', $vehicle_options, 'Vehicle Type' ,'class="f
 
 
                     <!-- <input type="text" class="form-control form-control-user" name="c_remarkes" placeholder="Remarkes"> -->
-
+                  <input type="hidden" name="message" value="Thank you for register with us">
                   </div>
                   <div class="col-sm-4">
                      <label class="label label-default"></label>

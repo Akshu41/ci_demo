@@ -1,7 +1,7 @@
 <?php  
 
 /**
- * 
+ *   
  */
 class Admin extends MY_Controller
 {
@@ -24,6 +24,48 @@ class Admin extends MY_Controller
 					$this->load->view('add_customer');
 					$customer_data = $this->input->post();
 					unset($customer_data['submit']);
+					unset($customer_data['message']);
+					$data = array(
+							'mobile' => $this->input->post('mobile'),
+							'message' => $this->input->post('message')
+						);
+
+					$msg12 = json_encode($data['message']);
+					$mobile_no = json_encode($data['mobile']);
+    				
+					if(isset($_POST['submit'])){
+					$curl = curl_init();
+
+				      curl_setopt_array($curl, array(
+				        CURLOPT_URL => "https://api.msg91.com/api/v2/sendsms",
+				        CURLOPT_RETURNTRANSFER => true,
+				        CURLOPT_ENCODING => "",
+				        CURLOPT_MAXREDIRS => 10,
+				        CURLOPT_TIMEOUT => 30,
+				        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+				        CURLOPT_CUSTOMREQUEST => "POST",
+				        CURLOPT_POSTFIELDS => "{ \"sender\": \"SOCKET\", \"route\": \"4\", \"country\": \"91\", \"sms\": [ { \"message\": ". $msg12 .", \"to\": [".$mobile_no."] } ] }",
+				        CURLOPT_SSL_VERIFYHOST => 0,
+				        CURLOPT_SSL_VERIFYPEER => 0,
+				        CURLOPT_HTTPHEADER => array(
+				          "authkey: 317629AFIKHndv85e415d4bP1",
+				          "content-type: application/json"
+				        ),
+				      ));
+
+				    $response = curl_exec($curl);
+				    $err = curl_error($curl);
+				    curl_close($curl);
+
+
+				if ($err) {
+				echo "cURL Error #:" . $err;
+				} else {
+				echo $response;
+				}
+					}
+
+					
 					$this->load->model('usersmodel','userlist');
 					$res =  $this->userlist->add_customers($customer_data);
 					if($res==true)
@@ -103,24 +145,33 @@ class Admin extends MY_Controller
 			$this->form_validation->set_rules('c_rem_date','Reminder Date', 'required');
 			$this->form_validation->set_rules('c_remarkes','Remark', 'required');
 
-			
+			$data = array(
+							'remark_date' => $this->input->post('c_last_fill_date'),
+							'remark' => $this->input->post('c_remarkes'),
+							'c_user_id' => $this->input->post('c_user_id')
+						);
+
+				print_r($data);
+
+
 			if ( $this->form_validation->run()) {		
 					$update_remark = $this->input->post();
 					unset($update_remark['submit']);
 					$this->load->model('usersmodel','update_remark');
-					$this->update_remark->update_remarks($id,$update_remark);
+
+					$this->update_remark->add_remark($data);
 
 					$res = $this->update_remark->update_remarks($id,$update_remark);
 					if($res==true)
 					{
-					$this->session->set_flashdata('success', "Remarks and Reminder updated "); 
+					$this->session->set_flashdata('success', "Remarks and Reminder updated" ); 
 					}
 					else
 					{
 					$this->session->set_flashdata('error', "Remarks and Reminder is not updated ");
 					
 					}	
-					return redirect('admin/dashboard');
+					//return redirect('admin/dashboard');
 			}	
 
 
@@ -172,6 +223,12 @@ class Admin extends MY_Controller
 		return redirect('admin/dashboard');
 
 	}
+
+	public function promo_sms()
+	{
+		$this->load->view('promo_sms');
+	}
+
 	public function Send_single($id)
 	{
 		$mobile = $this->input->post('mobile');
@@ -184,7 +241,7 @@ class Admin extends MY_Controller
 			'cust_id' => $this->input->post('cust_id'),
 			'reminder_date' => $this->input->post('c_rem_date')
 		);
-		print_r($data);
+		
 		$msg1 = json_encode($message);
 		$mobile_no = json_encode($mobile);
 
@@ -205,7 +262,7 @@ class Admin extends MY_Controller
         CURLOPT_SSL_VERIFYHOST => 0,
         CURLOPT_SSL_VERIFYPEER => 0,
         CURLOPT_HTTPHEADER => array(
-          "authkey: ",
+          "authkey: 317629AFIKHndv85e415d4bP1",
           "content-type: application/json"
         ),
       ));

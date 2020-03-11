@@ -18,7 +18,7 @@
              echo  form_open("admin/update_remark/{$id}",['class'=>'user']); ?>
                 	
                  <input type="hidden" name="c_visit" value="<?php echo $visit; ?>">
-                
+                 <input type="hidden" name="c_user_id" value="<?php echo $id; ?>">
 
                  <div class="form-group row">
                   <div class="col-sm-4">

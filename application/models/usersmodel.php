@@ -43,6 +43,8 @@ class Usersmodel extends CI_Model
 	}
 
 	
+
+	
 	public function find_remark($id)
 	{		
 
@@ -57,6 +59,10 @@ class Usersmodel extends CI_Model
 
 	}
 
+	public function add_remark(Array $data)
+	{
+		return $this->db->insert('visit_update' , $data);
+	}
 
 
 	
