@@ -18,11 +18,11 @@
 
 
 
-if($a_arr){
- echo $no_obj = json_encode(@$a_arr);
+if(@$a_arr){
+  $no_obj = json_encode(@$a_arr);
 }
-elseif ($a_arr1) {
-  echo $no_obj = json_encode(@$a_arr1);
+elseif (@$a_arr1) {
+ $no_obj = json_encode(@$a_arr1);
 }
 
  
