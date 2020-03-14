@@ -270,7 +270,7 @@ class Admin extends MY_Controller
 		$this->load->model('usersmodel','due_date');
 		$due_date = $this->due_date->due_date();
 		$this->load->view('due_date' , ['due_date' => $due_date]);
-		print_r($due_date);
+		
 		
 	}
 
