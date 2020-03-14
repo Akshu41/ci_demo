@@ -128,6 +128,12 @@
           <span>Today's Reminders</span></a>
       </li> 
 
+       <li class="nav-item <?php if($this->uri->segment(2)=="due_date"){echo "active";} ?>  ">
+        <a class="nav-link" href="<?php echo base_url("/admin/due_date")?>">
+         <i class="fas fa-frown-open"></i>
+          <span>Due Date</span></a>
+      </li> 
+
       <!-- Nav Item - Tables -->
      <!--  <li class="nav-item">
         <a class="nav-link" href="tables.html">

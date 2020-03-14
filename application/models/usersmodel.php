@@ -150,6 +150,13 @@ class Usersmodel extends CI_Model
 		return $q->result();
 	}
 
+	public function due_date()
+	{
+			 $date = date('Y-m-d');
+
+		$q = $this->db->select('c_user_id , c_name ,c_rem_date , c_visit , 	c_remarkes' )->where('c_rem_date <=' , $date )->get('tbl_cust');
+		return $q->result();
+	}
 
 
 	

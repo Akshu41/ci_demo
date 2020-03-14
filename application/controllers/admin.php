@@ -264,6 +264,15 @@ class Admin extends MY_Controller
 		
 	}
 
+	public function due_date()
+	{
+		
+		$this->load->model('usersmodel','due_date');
+		$due_date = $this->due_date->due_date();
+		$this->load->view('due_date' , ['due_date' => $due_date]);
+		print_r($due_date);
+		
+	}
 
 	public function Send_single($id)
 	{

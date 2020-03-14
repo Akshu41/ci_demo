@@ -10,9 +10,22 @@
          
       }
 
-  @$a_arr;
+      foreach ($mobile_three as $key => $val) {
+         @$a_arr1[] =  $val->mobile;
 
-$no_obj = json_encode(@$a_arr);
+         
+      }
+
+ print_r(@$a_arr) ;
+
+
+if($a_arr){
+ echo $no_obj = json_encode(@$a_arr);
+}
+elseif ($a_arr1) {
+  echo $no_obj = json_encode(@$a_arr1);
+}
+
  
 ?>
 
@@ -181,12 +194,12 @@ $msg1 = json_encode($msg);
         CURLOPT_SSL_VERIFYHOST => 0,
         CURLOPT_SSL_VERIFYPEER => 0,
         CURLOPT_HTTPHEADER => array(
-          "authkey: 323134AzdHLwxwWVZ5e6c5429P1",
+          "authkey: 323134AzdHLwxwWVZ5e6c5429",
           "content-type: application/json"
         ),
       ));
 
-    $response = curl_exec($curl);
+    $response = curl_exec($curl);  
     $err = curl_error($curl);
     curl_close($curl);
 
