@@ -16,7 +16,6 @@
          
       }
 
- print_r(@$a_arr) ;
 
 
 if($a_arr){
