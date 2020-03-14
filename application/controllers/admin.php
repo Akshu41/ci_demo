@@ -1,15 +1,25 @@
 <?php  
-
+ 
 /**
  *   
  */
 class Admin extends MY_Controller
 {
+
+	public function _construct()
+	{
+		parent::_construct();
+		if(! $this->session->userdata('id')) 
+			return redirect('login');
+	}
+
+
+
 	public function dashboard(){
 		$this->load->model('usersmodel','userlist');
 		$userslist = $this->userlist->users_list();
 		$this->load->view('dashboard' , ['userslist' => $userslist]);
-
+		
 	} 
 	
 
@@ -48,7 +58,7 @@ class Admin extends MY_Controller
 				        CURLOPT_SSL_VERIFYHOST => 0,
 				        CURLOPT_SSL_VERIFYPEER => 0,
 				        CURLOPT_HTTPHEADER => array(
-				          "authkey: 317629AFIKHndv85e415d4bP1",
+				          "authkey: 323134AzdHLwxwWVZ5e6c5429P1",
 				          "content-type: application/json"
 				        ),
 				      ));
@@ -126,7 +136,9 @@ class Admin extends MY_Controller
 			}	
 			else
 			{
-				$this->load->view('edit_customer'); 
+				$this->load->model('usersmodel','edit_list');
+				$edit_customer = $this->edit_list->find_customers($id);
+				$this->load->view('edit_customer' , ['edit_customer' => $edit_customer]);
 			}
 					
 	}
@@ -151,7 +163,7 @@ class Admin extends MY_Controller
 							'c_user_id' => $this->input->post('c_user_id')
 						);
 
-				print_r($data);
+				
 
 
 			if ( $this->form_validation->run()) {		
@@ -171,14 +183,15 @@ class Admin extends MY_Controller
 					$this->session->set_flashdata('error', "Remarks and Reminder is not updated ");
 					
 					}	
-					//return redirect('admin/dashboard');
+					return redirect('admin/dashboard');
 			}	
 
 
 
 			else
-			{
-				$this->load->view('add_remark'); 
+			{   $this->load->model('usersmodel','add_remark');		
+				$add_remark = $this->add_remark->find_remark($id);
+				$this->load->view('add_remark' , ['add_remark' => $add_remark]);
 			}
 					
 	}
@@ -210,8 +223,11 @@ class Admin extends MY_Controller
 	public function get_mobile()
 	{
 		$this->load->model('usersmodel','get_mobile');
-		$get_mobile = $this->get_mobile->get_mobile_list();
-		$this->load->view('get_mobile' , ['get_mobile' => $get_mobile]);
+		$mobile_today = $this->get_mobile->get_mobile_today();
+		$mobile_three = $this->get_mobile->get_mobile_befor_three();
+		$mobile_seven = $this->get_mobile->get_mobile_befor_seven();
+
+		$this->load->view('get_mobile' , ['mobile_today' => $mobile_today , 'mobile_three' => $mobile_three ,'mobile_seven' => $mobile_seven]);
 
 	}
 
@@ -229,6 +245,26 @@ class Admin extends MY_Controller
 		$this->load->view('promo_sms');
 	}
 
+
+
+	public function user_info($id)
+	{
+		$this->load->model('usersmodel','users_info');
+		$user_info = $this->users_info->get_user_info($id);
+		$user_sms = $this->users_info->get_user_sms($id);
+		$user_remark = $this->users_info->get_user_remark($id);
+		$data = array(
+               'user_info' => $user_info,
+               'user_sms' => $user_sms,
+               'user_remark' => $user_remark,
+          );
+
+
+		$this->load->view('user_info' , ['user_info' => $user_info , 'user_sms' => $user_sms , 'user_remark' => $user_remark ]);
+		
+	}
+
+
 	public function Send_single($id)
 	{
 		$mobile = $this->input->post('mobile');
@@ -239,7 +275,8 @@ class Admin extends MY_Controller
 			'mobile' => $this->input->post('mobile'),
 			'message' => $this->input->post('single_msg'),
 			'cust_id' => $this->input->post('cust_id'),
-			'reminder_date' => $this->input->post('c_rem_date')
+			'reminder_date' => $this->input->post('c_rem_date'),
+			'c_reg_date' => $this->input->post('c_reg_date')
 		);
 		
 		$msg1 = json_encode($message);
@@ -262,7 +299,7 @@ class Admin extends MY_Controller
         CURLOPT_SSL_VERIFYHOST => 0,
         CURLOPT_SSL_VERIFYPEER => 0,
         CURLOPT_HTTPHEADER => array(
-          "authkey: 317629AFIKHndv85e415d4bP1",
+          "authkey: 323134AzdHLwxwWVZ5e6c5429P1",
           "content-type: application/json"
         ),
       ));
@@ -317,11 +354,6 @@ class Admin extends MY_Controller
 	}
 
 
-	public function _construct()
-	{
-		parent::_construct();
-		if(! $this->session->userdata('id')) 
-			return redirect('login');
-	}
+	
 
 } 

@@ -11,6 +11,7 @@
 
               <?php $id=$single_sms->c_user_id;
                     $c_rem_date =$single_sms->c_rem_date;
+                    $c_reg_date = date('Y-m-d');
 
 
               echo  form_open("admin/Send_single/{$id}",['class'=>'user']); ?>                
@@ -25,6 +26,7 @@
 
                 <input type="hidden" name="c_rem_date" value="<?php echo $c_rem_date ?>">
                 <input type="hidden" name="cust_id" value="<?php echo $id ?>">
+                 <input type="hidden" name="c_reg_date" value="<?php echo $c_reg_date ?>">
 
                  <div class="form-group row">
                   <div class="col-sm-8">

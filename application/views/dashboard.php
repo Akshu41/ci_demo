@@ -100,11 +100,14 @@
                     <!-- </td><td> -->
                       <?php $id = $userlist->c_user_id; ?>
                       <?php echo anchor("admin/single_sms/{$id}",'<i class="fas fa-paper-plane"></i>','class="btn btn-info" title="Send Personal SMS"'); ?>
-                    <!-- </td><td> -->
+                    <!-- </td><td> -->  
+
                       <?php $id = $userlist->c_user_id; ?>
                       <?php echo anchor("admin/add_remark/{$id}",'<i class="fas fa-envelope"></i>','class="btn btn-info" title="Add Customer\'s Visit"'); ?>
                     <!-- </td><td> -->
-
+                      <?php $id = $userlist->c_user_id; ?>
+                      <?php echo anchor("admin/user_info/{$id}",'<i class="fas fa-user"></i>','class="btn btn-info" title="User Information"'); ?>
+                                          <!-- </td><td> -->
                       <div class="modal fade" id="delete_cus" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                           <div class="modal-content">

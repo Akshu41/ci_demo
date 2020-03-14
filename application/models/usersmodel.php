@@ -100,15 +100,56 @@ class Usersmodel extends CI_Model
 
 	}
 
-	public function get_mobile_list()
+	public function get_mobile_today()
 	{
-		    $date = new DateTime(null, new DateTimezone("Asia/Kolkata"));
+		      $date = new DateTime(null, new DateTimezone("Asia/Kolkata"));
 			$current_date = $date->format('Y-m-d');
 
 
 		$q = $this->db->select(['mobile'])->where('c_rem_date',$current_date)->get('tbl_cust');
 		return $q->result();
 	}
+
+	public function get_mobile_befor_three()
+	{
+		      $date = new DateTime(null, new DateTimezone("Asia/Kolkata"));
+			$befor_3 = date('Y-m-d', strtotime('3 days'));
+
+
+		$q = $this->db->select(['mobile'])->where('c_rem_date',$befor_3)->get('tbl_cust');
+		return $q->result();
+	}
+
+	public function get_mobile_befor_seven()
+	{
+		      $date = new DateTime(null, new DateTimezone("Asia/Kolkata"));
+			$befor_7 = date('Y-m-d', strtotime('7 days'));
+
+
+		$q = $this->db->select(['mobile'])->where('c_rem_date',$befor_7)->get('tbl_cust');
+		return $q->result();
+	}
+
+
+
+	public function get_user_info($id)
+	{
+		$q = $this->db->select()->where('c_user_id' , $id )->get('tbl_cust');
+		return $q->row();
+	}
+
+	public function get_user_sms($id)
+	{
+		$q = $this->db->select()->where('cust_id' , $id )->get('messages');
+		return $q->result();
+	}
+
+	public function get_user_remark($id)
+	{
+		$q = $this->db->select()->where('c_user_id' , $id )->get('visit_update');
+		return $q->result();
+	}
+
 
 
 	
