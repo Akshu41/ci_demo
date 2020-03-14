@@ -66,7 +66,7 @@
 					</div>
 
 					<div class="col-md-3 inner-class ">
-						<h6>Last Remark:- <?php echo $user_info->c_remarkes; ?></h6>
+						<h6>Latest visit remark:- <?php echo $user_info->c_remarkes; ?></h6>
 					</div>
 
 					<div class="col-md-3 inner-class ">
@@ -114,8 +114,8 @@
      <?php  foreach ($user_remark as $key1) {  ?>
     
 
-    <label>Date:</label> <p class="card-text"><?php echo $key1->remark_date;  ?></p>
-    <label>Remark:</label><p class="card-text"><?php echo $key1->remark;  ?></p> 
+    <p class="card-text"><?php echo $key1->remark_date;  ?> : <?php echo $key1->remark;  ?></p>
+    <p class="card-text"></p> 
     <hr>
    
    <?php  } ?>

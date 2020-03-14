@@ -55,7 +55,7 @@
                       <th>Reminder Date</th>
                       <th>Last Filled Date</th>
                       <th>Visits</th>
-                      <th>Remarks</th>
+                      <th>Latest visit remark</th>
                       <!-- <th>Edit</th>
                       <th>Send</th>
                       <th>Add Vist</th>
@@ -92,7 +92,7 @@
                     <!-- <td><?php echo $userlist->c_vehicle_type;  ?></td> -->
                     <td class="grid-item" data-date="<?php echo $userlist->c_rem_date;  ?>"><?php echo $userlist->c_rem_date;  ?></td>
                     <td><?php echo $userlist->c_last_fill_date;  ?></td>
-                    <td><?php echo $userlist->c_visit + 1;  ?></td>
+                    <td><?php echo $userlist->c_visit;  ?></td>
                     <td><?php echo $userlist->c_remarkes;  ?></td>
                     <td>
                       <?php $id = $userlist->c_user_id; ?>
