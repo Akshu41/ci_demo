@@ -227,7 +227,114 @@ class Admin extends MY_Controller
 		$mobile_three = $this->get_mobile->get_mobile_befor_three();
 		$mobile_seven = $this->get_mobile->get_mobile_befor_seven();
 
+
 		$this->load->view('get_mobile' , ['mobile_today' => $mobile_today , 'mobile_three' => $mobile_three ,'mobile_seven' => $mobile_seven]);
+
+$selected_no = array();
+foreach ($mobile_today as $key => $val) {   
+ @$a_arr[] =  $val->mobile;
+  $selected_no['today'][] = $val->mobile;
+}
+
+
+foreach ($mobile_three as $key => $val) {
+ @$a_arr1[] =  $val->mobile;
+  $selected_no['three_day'][] = $val->mobile;
+}
+
+
+
+foreach ($mobile_seven as $key => $val) {
+ @$a_arr1[] =  $val->mobile;
+  $selected_no['mobile_seven'][] = $val->mobile;
+}
+
+
+if(@$a_arr){
+  $no_obj = json_encode(@$a_arr);
+}
+elseif (@$a_arr1) {
+ $no_obj = json_encode(@$a_arr1);
+}
+
+@$msg = $_POST['message'];
+$msg1 = json_encode($msg);
+
+
+if(isset($_POST['task']) && $_POST['task']=="sendMsg"){
+  //$selected_no['three_day']
+  //$selected_no['today']
+ 
+  $no_obj = (isset($selected_no[$_POST['action']]))?$selected_no[$_POST['action']]:array();
+  $no_obj = json_encode($no_obj);
+
+  		$aks  = $this->input->post();
+  			print_r($aks);
+
+  $curl = curl_init();
+
+  curl_setopt_array($curl, array(
+    CURLOPT_URL => "https://api.msg91.com/api/v2/sendsms",
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_ENCODING => "",
+    CURLOPT_MAXREDIRS => 10,
+    CURLOPT_TIMEOUT => 30,
+    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+    CURLOPT_CUSTOMREQUEST => "POST",
+    CURLOPT_POSTFIELDS => "{ \"sender\": \"SOCKET\", \"route\": \"4\", \"country\": \"91\", \"sms\": [ { \"message\": ".$msg1.", \"to\": ".$no_obj." } ] }",
+    CURLOPT_SSL_VERIFYHOST => 0,
+    CURLOPT_SSL_VERIFYPEER => 0,
+    CURLOPT_HTTPHEADER => array(
+      "authkey: 323134AzdHLwxwWVZ5e6c5429",
+      "content-type: application/json"
+    ),
+  ));
+
+  $response = curl_exec($curl);  
+  $err = curl_error($curl);
+  curl_close($curl);
+
+ if($json['code'] = '106')
+    {
+    	$json['message'];
+    }
+    elseif ($json['type'] = 'success') {
+    	$json['message'];
+    }
+    else{
+    	$json = " not send";
+    }
+
+
+ if ($err) {
+            echo "cURL Error #:" . $err;
+          } else {
+
+          	
+			
+			$res1 = $response;
+					if($res1==true)
+					{
+					$this->session->set_flashdata('success_send', $json['message']); 
+					}
+					else
+					{
+					$this->session->set_flashdata('error_send', $response);
+					
+					}	
+			// return redirect('admin/dashboard');
+           
+          }
+	
+}
+
+					
+					
+
+
+
+
+
 
 	}
 
