@@ -102,10 +102,12 @@ echo form_dropdown('c_vehicle_type', $vehicle_options, 'Vehicle Type' ,'class="f
                   <div class="col-sm-4">
                      <?php $product_options = array(
                     'Religion Type'         => 'Religion Type',
-                    'Hindu'           => 'Hindu',
-                    'Muslim'         => 'Muslim',
-                    'Bohra'        => 'Bohra',
-                    'Other'        => 'Other',
+                    '1'           => 'Hindu',
+                    '2'         => 'Muslim',
+                    '3'        => 'Bohra',
+                    '4'        => 'Panjabi',
+                    '5'        => 'Christan',
+                    '6'        => 'Other',
                     );
                     echo form_dropdown('c_religion', $product_options, 'Religion Type' ,'class="form-control" '); ?>
                     <!-- <select class="form-control " name="c_religion" > 

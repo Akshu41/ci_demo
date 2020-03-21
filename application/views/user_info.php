@@ -50,7 +50,19 @@
 					</div>
 
 					<div class="col-md-3 inner-class ">
-						<h6>Religion:- <?php echo $user_info->c_religion; ?></h6>
+						<h6>Religion:- <?php if ($user_info->c_religion == 1) {
+						echo "Hindu";
+						}elseif ($user_info->c_religion == 2) {
+							echo "Muslim";
+						} elseif ($user_info->c_religion == 3) {
+							echo "Bohra";
+						} elseif ($user_info->c_religion == 4) {
+							echo "Panjabi";
+						} elseif ($user_info->c_religion == 5) {
+							echo "Christan";
+						} elseif ($user_info->c_religion == 6) {
+							echo "Other";
+						}  ?></h6>
 					</div>
 
 					<div class="col-md-3 inner-class ">

@@ -171,7 +171,17 @@ class Usersmodel extends CI_Model
 	  $query = $this->db->get('festival');
 	  
 	  return $query->result();
+	 }	
+
+	 public function fetchReg_no($religion_id)
+	 {
+	  $this->db->where('c_religion', $religion_id);
+	  //$this->db->order_by('festival_name , festival_sms');
+	  $query = $this->db->get('tbl_cust');
+	  
+	  return $query->result();
 	 }
+
 
 	
 }

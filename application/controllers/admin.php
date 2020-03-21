@@ -366,6 +366,22 @@ if(isset($_POST['task']) && $_POST['task']=="sendMsg"){
 	  }
  }
 
+ 		public function getReg_no()
+ 		{
+ 	 
+	 	 $this->load->model('usersmodel','fetchReg_no');
+		  if($this->input->post('religion_id'))
+		  {
+		  	$output = $this->fetchReg_no->fetchReg_no($this->input->post('religion_id'));
+		   echo json_encode($output);
+		  }
+ 		}
+
+ 		public function getReg()
+ 		{
+ 			print_r($this->input->post());
+ 		}
+
 	public function user_info($id)
 	{
 		$this->load->model('usersmodel','users_info');
