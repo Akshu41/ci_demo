@@ -349,10 +349,22 @@ if(isset($_POST['task']) && $_POST['task']=="sendMsg"){
 
 	public function promo_sms()
 	{
-		$this->load->view('promo_sms');
+		$this->load->model('usersmodel','getReg');
+		$reg = $this->getReg->getReg();
+		$this->load->view('promo_sms' , ['reg' => $reg]);
+
 	}
 
+	public function getReg_id()
+	 {
 
+	  $this->load->model('usersmodel','fetchReg_id');
+	  if($this->input->post('religion_id'))
+	  {
+	  	$output = $this->fetchReg_id->fetchReg_id($this->input->post('religion_id'));
+	   echo json_encode($output);
+	  }
+ }
 
 	public function user_info($id)
 	{

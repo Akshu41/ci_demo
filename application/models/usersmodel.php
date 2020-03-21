@@ -1,7 +1,7 @@
 <?php 
 
 /**
- * 
+ *  
  */
 class Usersmodel extends CI_Model
 {
@@ -158,6 +158,20 @@ class Usersmodel extends CI_Model
 		return $q->result();
 	}
 
+	public function getReg()
+	{
+		$q = $this->db->get('tbl_cust');  
+	return $q->result();
+	}
+
+	public function fetchReg_id($religion_id)
+	 {
+	  $this->db->where('religion_id', $religion_id);
+	  //$this->db->order_by('festival_name , festival_sms');
+	  $query = $this->db->get('festival');
+	  
+	  return $query->result();
+	 }
 
 	
 }
