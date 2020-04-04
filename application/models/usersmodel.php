@@ -21,9 +21,10 @@ class Usersmodel extends CI_Model
 	
 	public function add_customers($customer_data)
 	{		
-
-		return $this->db->insert('tbl_cust' , $customer_data );
-
+		$this->db->insert('tbl_cust' , $customer_data );
+		$insert_id = $this->db->insert_id();
+	 
+		return  $insert_id;
 	}
 
 	
@@ -53,10 +54,9 @@ class Usersmodel extends CI_Model
 	}
 	
 	public function update_remarks($id, Array $update_remark)
-	{		
-
-			return $this->db->where('c_user_id' , $id )->update('tbl_cust' , $update_remark);
-
+	{				
+		$this->increment_visits_count($id);
+		return $this->db->where('c_user_id' , $id )->update('tbl_cust' , $update_remark);
 	}
 
 	public function add_remark(Array $data)
@@ -64,7 +64,11 @@ class Usersmodel extends CI_Model
 		return $this->db->insert('visit_update' , $data);
 	}
 
-
+	public function increment_visits_count($cust_id) {
+		$this->db->where('c_user_id', $cust_id);
+		$this->db->set('c_visit', 'c_visit+1', FALSE);
+		$this->db->update('tbl_cust');
+	}
 	
 	public function delete_customer($id)
 		{		
@@ -77,7 +81,7 @@ class Usersmodel extends CI_Model
 	
 	{		
 
-			$q = $this->db->select('mobile , c_user_id , c_rem_date ' )->where('c_user_id' , $id )->get('tbl_cust');
+		$q = $this->db->select('mobile , c_user_id , c_rem_date' )->where('c_user_id' , $id )->get('tbl_cust');
 		return $q->row();
 
 	}
@@ -139,7 +143,7 @@ class Usersmodel extends CI_Model
 	}
 
 	public function get_user_sms($id)
-	{
+	{ 
 		$q = $this->db->select()->where('cust_id' , $id )->get('messages');
 		return $q->result();
 	}
@@ -154,7 +158,7 @@ class Usersmodel extends CI_Model
 	{
 			 $date = date('Y-m-d');
 
-		$q = $this->db->select('c_user_id , c_name ,c_rem_date , c_visit , 	c_remarkes' )->where('c_rem_date <=' , $date )->get('tbl_cust');
+		$q = $this->db->select('c_user_id , c_name , mobile, c_rem_date, c_visit, c_remarkes' )->where('c_rem_date <=' , $date )->get('tbl_cust');
 		return $q->result();
 	}
 

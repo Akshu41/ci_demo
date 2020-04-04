@@ -9,7 +9,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>SB Admin 2 - Dashboard</title>
+  <title>Ishaqali Alihusain & Co.</title>
 
   <!-- Custom fonts for this template-->
   <link href=" <?php echo base_url("assest/vendor/fontawesome-free/css/all.min.css");?>" rel="stylesheet" type="text/css">
@@ -18,6 +18,7 @@
   <!-- Custom styles for this template-->
   <link href="<?php echo base_url("assest/css/sb-admin-2.min.css");?>" rel="stylesheet">
   <link href="<?php echo base_url("assest/vendor/datatables/dataTables.bootstrap4.min.css")?>" rel="stylesheet">
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 </head>
 
 <body id="page-top">
@@ -29,21 +30,27 @@
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
       <!-- Sidebar - Brand -->
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="dashboard">
-        <div class="sidebar-brand-icon rotate-n-15">
-          <i class="fas fa-laugh-wink"></i>
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<?= base_url("/admin/dashboard")?>">
+        <div class="sidebar-brand-icon">
+          IA
         </div>
-        <div class="sidebar-brand-text mx-3">Admin</div>
+        <div class="sidebar-brand-text" style="text-transform: none">&Co.</div>
       </a>
 
       <!-- Divider -->
       <hr class="sidebar-divider my-0">
 
+      <li class="nav-item <?php if($this->uri->segment(2)=="add_customer"){echo "active";} ?> ">
+        <a class="nav-link" title="Dashboard" href="<?php echo base_url("/admin/add_customer")?>">
+          <i class="fa fa-user"></i>
+          <span>Add Customer</span></a>
+      </li>
+
       <!-- Nav Item - Dashboard -->
-      <li class="nav-item <?php if($this->uri->segment(2)=="dashboard"){echo "active";} ?> ">
+      <li class="nav-item <?php if($this->uri->segment(2)=="dashboard" || $this->uri->segment(2)=="edit_customer"){echo "active";} ?> ">
         <a class="nav-link" title="Dashboard" href="<?php echo base_url("/admin/dashboard")?>">
-          <i class="fas fa-fw fa-tachometer-alt"></i>
-          <span>Dashboard </span></a>
+          <i class="fa fa-users"></i>
+          <span>Customers</span></a>
       </li>
 
       <!-- Divider -->
@@ -94,7 +101,7 @@
       </li> -->
 
       <!-- Divider -->
-      <hr class="sidebar-divider">
+      <!-- <hr class="sidebar-divider"> -->
 
       <!-- Heading -->
      <!--  <div class="sidebar-heading">
@@ -124,14 +131,15 @@
       <!-- Nav Item - Charts -->
      <li class="nav-item <?php if($this->uri->segment(2)=="get_mobile"){echo "active";} ?>  ">
         <a class="nav-link" href="<?php echo base_url("/admin/get_mobile")?>">
-          <i class="fas fa-fw fa-chart-area"></i>
-          <span>Today's Reminders</span></a>
+          <i class="fa fa-fill"></i>
+          <span>Due For Filling</span></a>
       </li> 
 
-       <li class="nav-item <?php if($this->uri->segment(2)=="due_date"){echo "active";} ?>  ">
+      <li class="nav-item <?php if($this->uri->segment(2)=="due_date"){echo "active";} ?>  ">
         <a class="nav-link" href="<?php echo base_url("/admin/due_date")?>">
-         <i class="fas fa-frown-open"></i>
-          <span>Due Date</span></a>
+         <i class="fas fa-hourglass-end"></i>
+          <span>Expired Fillings</span>
+        </a>
       </li> 
 
       <!-- Nav Item - Tables -->
@@ -142,7 +150,13 @@
       </li> -->
 
       <!-- Divider -->
-      <hr class="sidebar-divider d-none d-md-block">
+      <!-- <hr class="sidebar-divider"> -->
+
+      <li class="nav-item <?php if($this->uri->segment(2)=="promo_sms") echo "active" ?>">
+        <a class="nav-link" href="<?php echo base_url("/admin/promo_sms")?>">
+         <i class="fa fa-envelope"></i>
+          <span>Festival SMS</span></a>
+      </li> 
 
       <!-- Sidebar Toggler (Sidebar) -->
       <div class="text-center d-none d-md-inline">
@@ -212,7 +226,7 @@
                 <span class="badge badge-danger badge-counter">3+</span>
               </a> -->
               <!-- Dropdown - Alerts -->
-              <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
+              <!-- <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
                 <h6 class="dropdown-header">
                   Alerts Center
                 </h6>
@@ -250,7 +264,7 @@
                   </div>
                 </a>
                 <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
-              </div>
+              </div> -->
             </li>
 
             <!-- Nav Item - Messages -->
@@ -260,7 +274,7 @@
                 <span class="badge badge-danger badge-counter">7</span>
               </a> -->
               <!-- Dropdown - Messages -->
-              <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="messagesDropdown">
+              <!-- <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="messagesDropdown">
                 <h6 class="dropdown-header">
                   Message Center
                 </h6>
@@ -305,20 +319,20 @@
                   </div>
                 </a>
                 <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
-              </div>
+              </div> -->
             </li>
 
-            <div class="topbar-divider d-none d-sm-block"></div>
+            <!-- <div class="topbar-divider d-none d-sm-block"></div> -->
 
             <!-- Nav Item - User Information -->
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">Admin</span>
-                <img class="img-profile rounded-circle" src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQ54Su-LfsK7x2zl9dre42baolsprENOd-OVeBu3wp6yRLnbK0W">
+                <!-- <img class="img-profile rounded-circle" src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQ54Su-LfsK7x2zl9dre42baolsprENOd-OVeBu3wp6yRLnbK0W"> -->
               </a>
               <!-- Dropdown - User Information -->
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                <div class="dropdown-divider"></div>
+                <!-- <div class="dropdown-divider"></div> -->
                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                   <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                   Logout
