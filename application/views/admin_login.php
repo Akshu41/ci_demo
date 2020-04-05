@@ -27,16 +27,16 @@
     <!-- Outer Row -->
     <div class="row justify-content-center">
 
-      <div class="col-xl-10 col-lg-12 col-md-9">
+      <div class="col-xl-5 col-lg-5 col-md-5">
 
-        <div class="card o-hidden border-0 shadow-lg my-5">
+        <div class="card o-hidden border-0 shadow-lg my-5" style="top:25%">
           <div class="card-body p-0">
             <!-- Nested Row within Card Body -->
             <div class="row">
               <div class="col-lg-12">
                 <div class="p-5">
                   <div class="text-center">
-                    <h1 class="h4 text-gray-900 mb-4">Admin</h1>
+                    <h1 class="h4 text-gray-900 mb-4">Ishaqali Alihusain & Co.</h1>
                   </div>
                   
                     <?php echo  form_open('login/admin_login',['class'=>'user']); ?>
@@ -47,7 +47,7 @@
                     
            <?php  }?>       <div class="form-group">
 
-                     <?php echo  form_input(['name'=>'username', 'class'=>'form-control form-control-user', 'id'=>'fexampleInputEmail' , 'placeholder'=>'Username', 'value'=>set_value('username')]); ?>
+                     <?php echo  form_input(['name'=>'username', 'class'=>'form-control', 'id'=>'fexampleInputEmail' , 'placeholder'=>'Username', 'value'=>set_value('username')]); ?>
                       <div class="error" >
                         <?php echo form_error('username');  ?>
                       </div>
@@ -55,19 +55,14 @@
                     </div>
                     <div class="form-group">
 
-                       <?php echo  form_password(['name'=>'password', 'class'=>'form-control form-control-user', 'id'=>'exampleInputPassword' , 'placeholder'=>'Password','value'=>set_value('password') ]); ?>
+                       <?php echo  form_password(['name'=>'password', 'class'=>'form-control', 'id'=>'exampleInputPassword' , 'placeholder'=>'Password','value'=>set_value('password') ]); ?>
 
                            <div class="error" >
                         <?php echo form_error('password');  ?>
                       </div>
-                    </div>
-                    <div class="form-group">
-                      <div class="custom-control custom-checkbox small">
-                      </div>
-                    </div>
-                    <?php echo  form_submit(['name'=>'submit', 'value'=>'Login', 'class'=>'btn btn-primary btn-user btn-block']); ?>
-                    </a>
-                    <hr>
+                    </div>                    
+                    <?php echo  form_submit(['name'=>'submit', 'value'=>'Login', 'class'=>'btn btn-primary btn-block']); ?>
+                    </a>                    
                   </form>
                 </div>
               </div>

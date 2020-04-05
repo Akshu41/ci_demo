@@ -6,95 +6,91 @@
 class Admin extends MY_Controller
 {
 
-	public function _construct()
+	function __construct()
 	{
-		parent::_construct();
-		if(! $this->session->userdata('id')) 
+		parent::__construct();		
+		if(! $this->session->userdata('id')) { 
 			return redirect('login');
+		}
 	}
 
-
-
-	public function dashboard(){
+	public function dashboard() {		
 		$this->load->model('usersmodel','userlist');
 		$userslist = $this->userlist->users_list();
 		$this->load->view('dashboard' , ['userslist' => $userslist]);
 		
 	} 
-	
 
 	public function add_customer()
-	{	
-			$this->form_validation->set_rules('c_name','Name', 'required');
-			$this->form_validation->set_rules('mobile','Mobile', 'required|regex_match[/^[0-9]{10}$/]|is_unique[tbl_cust.mobile]',array('required' => 'You must provide a %s.' , 'is_unique' => '%s no is already register.'));
-			$this->form_validation->set_rules('c_email','Email', 'required|is_unique[tbl_cust.c_email]',array('required' => 'You must provide a %s.' , 'is_unique' => '%s no is already register.'));
+	{
+		// $this->form_validation->set_rules('c_name','Name', 'required');
+		$this->form_validation->set_rules('mobile','Mobile', 'required|regex_match[/^[0-9]{10}$/]|is_unique[tbl_cust.mobile]',array('required' => 'You must provide a %s.' , 'is_unique' => '%s already exists!'));
+		// $this->form_validation->set_rules('c_email','Email', 'required|is_unique[tbl_cust.c_email]',array('required' => 'You must provide a %s.' , 'is_unique' => '%s no is already register.'));
+		
+		if ( $this->form_validation->run()) {					
+			// $this->load->view('add_customer');
+			$customer_data = $this->input->post();
+			unset($customer_data['submit']);
+			// unset($customer_data['message']);
+			
+			$data = array (
+				'mobile' => $this->input->post('mobile'),
+				// 'message' => $this->input->post('message')
+			);
+			$welcome_msg = 'Thank you for registering and filling with us! We hope for a long term association with you.';
+			$msg12 = json_encode($welcome_msg);
+			$mobile_no = json_encode($data['mobile']);
+			
+			if(isset($_POST['submit'])){
+				$curl = curl_init();
 
-			if ( $this->form_validation->run()) {
-						
-					$this->load->view('add_customer');
-					$customer_data = $this->input->post();
-					unset($customer_data['submit']);
-					unset($customer_data['message']);
-					$data = array(
-							'mobile' => $this->input->post('mobile'),
-							'message' => $this->input->post('message')
-						);
+				curl_setopt_array($curl, array(
+					CURLOPT_URL => "https://api.msg91.com/api/v2/sendsms",
+					CURLOPT_RETURNTRANSFER => true,
+					CURLOPT_ENCODING => "",
+					CURLOPT_MAXREDIRS => 10,
+					CURLOPT_TIMEOUT => 30,
+					CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+					CURLOPT_CUSTOMREQUEST => "POST",
+					CURLOPT_POSTFIELDS => "{ \"sender\": \"SOCKET\", \"route\": \"4\", \"country\": \"91\", \"sms\": [ { \"message\": ". $msg12 .", \"to\": [".$mobile_no."] } ] }",
+					CURLOPT_SSL_VERIFYHOST => 0,
+					CURLOPT_SSL_VERIFYPEER => 0,
+					CURLOPT_HTTPHEADER => array(
+						"authkey: 323134AzdHLwxwWVZ5e6c5429P1",
+						"content-type: application/json"
+					),
+				));
 
-					$msg12 = json_encode($data['message']);
-					$mobile_no = json_encode($data['mobile']);
-    				
-					if(isset($_POST['submit'])){
-					$curl = curl_init();
-
-				      curl_setopt_array($curl, array(
-				        CURLOPT_URL => "https://api.msg91.com/api/v2/sendsms",
-				        CURLOPT_RETURNTRANSFER => true,
-				        CURLOPT_ENCODING => "",
-				        CURLOPT_MAXREDIRS => 10,
-				        CURLOPT_TIMEOUT => 30,
-				        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-				        CURLOPT_CUSTOMREQUEST => "POST",
-				        CURLOPT_POSTFIELDS => "{ \"sender\": \"SOCKET\", \"route\": \"4\", \"country\": \"91\", \"sms\": [ { \"message\": ". $msg12 .", \"to\": [".$mobile_no."] } ] }",
-				        CURLOPT_SSL_VERIFYHOST => 0,
-				        CURLOPT_SSL_VERIFYPEER => 0,
-				        CURLOPT_HTTPHEADER => array(
-				          "authkey: 323134AzdHLwxwWVZ5e6c5429P1",
-				          "content-type: application/json"
-				        ),
-				      ));
-
-				    $response = curl_exec($curl);
-				    $err = curl_error($curl);
-				    curl_close($curl);
-
+				$response = curl_exec($curl);
+				$err = curl_error($curl);
+				curl_close($curl);
 
 				if ($err) {
-				echo "cURL Error #:" . $err;
-				} else {
-				echo $response;
+					die("cURL Error #:" . $err);
 				}
-					}
-
-					
-					$this->load->model('usersmodel','userlist');
-					$res =  $this->userlist->add_customers($customer_data);
-					if($res==true)
-					{
-					$this->session->set_flashdata('success', "Customer added"); 
-					}
-					else
-					{
-					$this->session->set_flashdata('error', "Customer is not added");
-					
-					}	
-					 return redirect('admin/dashboard'); 
 			}
-		else
-		{
+
+			$customer_data['c_reg_date'] = $customer_data['c_last_fill_date'] = date('Y-m-d'); 
+			$customer_data['c_rem_date'] = date('Y-m-d', strtotime("+3 months", strtotime($customer_data['c_last_fill_date'])));
+			
+			$this->load->model('usersmodel','userlist');
+			$cust_id =  $this->userlist->add_customers($customer_data);
+			if($cust_id) {
+				$rem_data = array(
+					'remark_date' => $customer_data['c_last_fill_date'],
+					'remark' => $welcome_msg,
+					'c_user_id' => $cust_id
+				);
+				$this->userlist->add_remark($rem_data);
+
+				$this->session->set_flashdata('success', "Customer added successfully."); 
+			} else {
+				$this->session->set_flashdata('error', "Customer addition falied. Please try again.");			
+			}	
+			return redirect('admin/dashboard'); 
+		} else {
 			$this->load->view('add_customer'); 
-		}
-		
-		
+		}				
 	}
 
 	public function edit_customer($id)
@@ -154,33 +150,38 @@ class Admin extends MY_Controller
 	public function update_remark($id)
 	{
 
-			$this->form_validation->set_rules('c_rem_date','Reminder Date', 'required');
+			// $this->form_validation->set_rules('c_rem_date','Reminder Date', 'required');
 			$this->form_validation->set_rules('c_remarkes','Remark', 'required');
 
+			$customer_data['c_last_fill_date'] = date('Y-m-d'); 
+			$customer_data['c_rem_date'] = date('Y-m-d', strtotime("+3 months", strtotime($customer_data['c_last_fill_date'])));
+
 			$data = array(
-							'remark_date' => $this->input->post('c_last_fill_date'),
-							'remark' => $this->input->post('c_remarkes'),
-							'c_user_id' => $this->input->post('c_user_id')
-						);
+				'remark_date' => $customer_data['c_last_fill_date'],
+				'remark' => $this->input->post('c_remarkes'),
+				'c_user_id' => $this->input->post('c_user_id')
+			);
 
-				
-
-
-			if ( $this->form_validation->run()) {		
-					$update_remark = $this->input->post();
-					unset($update_remark['submit']);
+			if ( $this->form_validation->run()) {												
+					$update_remark['c_last_fill_date'] = $customer_data['c_last_fill_date'];
+					$update_remark['c_rem_date'] = $customer_data['c_rem_date'];
+					$update_remark['c_remarkes'] = $this->input->post('c_remarkes');					
+					
 					$this->load->model('usersmodel','update_remark');
 
 					$this->update_remark->add_remark($data);
 
-					$res = $this->update_remark->update_remarks($id,$update_remark);
+					$res = $this->update_remark->update_remarks($id, $update_remark);
 					if($res==true)
 					{
-					$this->session->set_flashdata('success', "Remarks and Reminder updated" ); 
+						$cust_details = $this->update_remark->find_customers($id);						
+						$this->send_sms($this->input->post('c_remarkes'), $cust_details->mobile);
+						// Start from here
+					$this->session->set_flashdata('success', "Visit added successfully." ); 
 					}
 					else
 					{
-					$this->session->set_flashdata('error', "Remarks and Reminder is not updated ");
+					$this->session->set_flashdata('error', "An error occured. Please try again.");
 					
 					}	
 					return redirect('admin/dashboard');
@@ -205,9 +206,6 @@ class Admin extends MY_Controller
 		$this->load->model('usersmodel','single_sms');
 		$single_sms = $this->single_sms->single_sms($id);
 		$this->load->view('single_sms' , ['single_sms' => $single_sms]);
-
-
-
 	}
 
 
@@ -242,13 +240,10 @@ foreach ($mobile_three as $key => $val) {
   $selected_no['three_day'][] = $val->mobile;
 }
 
-
-
 foreach ($mobile_seven as $key => $val) {
  @$a_arr1[] =  $val->mobile;
   $selected_no['mobile_seven'][] = $val->mobile;
 }
-
 
 if(@$a_arr){
   $no_obj = json_encode(@$a_arr);
@@ -268,61 +263,69 @@ if(isset($_POST['task']) && $_POST['task']=="sendMsg"){
   $no_obj = (isset($selected_no[$_POST['action']]))?$selected_no[$_POST['action']]:array();
   $no_obj = json_encode($no_obj);
 
-  		$aks  = $this->input->post();
-  			print_r($aks);
+  $aks  = $this->input->post();
+  $mobile= $aks['mobile'];
+  $message= $aks['message'];
 
-  $curl = curl_init();
-
-  curl_setopt_array($curl, array(
-    CURLOPT_URL => "https://api.msg91.com/api/v2/sendsms",
-    CURLOPT_RETURNTRANSFER => true,
-    CURLOPT_ENCODING => "",
-    CURLOPT_MAXREDIRS => 10,
-    CURLOPT_TIMEOUT => 30,
-    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-    CURLOPT_CUSTOMREQUEST => "POST",
-    CURLOPT_POSTFIELDS => "{ \"sender\": \"SOCKET\", \"route\": \"4\", \"country\": \"91\", \"sms\": [ { \"message\": ".$msg1.", \"to\": ".$no_obj." } ] }",
-    CURLOPT_SSL_VERIFYHOST => 0,
-    CURLOPT_SSL_VERIFYPEER => 0,
-    CURLOPT_HTTPHEADER => array(
-      "authkey: 323134AzdHLwxwWVZ5e6c5429",
-      "content-type: application/json"
-    ),
-  ));
-
-  $response = curl_exec($curl);  
-  $err = curl_error($curl);
-  curl_close($curl);
-
- if($json['code'] = '106')
-    {
-    	$json['message'];
-    }
-    elseif ($json['type'] = 'success') {
-    	$json['message'];
-    }
-    else{
-    	$json = " not send";
-    }
+  		$msg1 = json_encode($message);
+		$mobile = json_encode($mobile);
 
 
- if ($err) {
+  
+
+ $curl = curl_init();
+
+		curl_setopt_array($curl, array(
+		  CURLOPT_URL => "https://api.msg91.com/api/v2/sendsms",
+		  CURLOPT_RETURNTRANSFER => true,
+		  CURLOPT_ENCODING => "",
+		  CURLOPT_MAXREDIRS => 10,
+		  CURLOPT_TIMEOUT => 30,
+		  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+		  CURLOPT_CUSTOMREQUEST => "POST",
+		  CURLOPT_POSTFIELDS => "{ \"sender\": \"SOCKET\", \"route\": \"4\", \"country\": \"91\", \"sms\": [ { \"message\": ".$msg1.", \"to\": ".$mobile." } ] }",
+		  CURLOPT_SSL_VERIFYHOST => 0,
+		  CURLOPT_SSL_VERIFYPEER => 0,
+		  CURLOPT_HTTPHEADER => array(
+			"authkey: 323134AzdHLwxwWVZ5e6c5429P1",
+			"content-type: application/json"
+		  ),
+		));
+  
+	  $response = curl_exec($curl);
+	  $err = curl_error($curl);
+	  curl_close($curl);
+  
+	  $json = json_decode($response, true);
+  
+	  if($json['code'] = '106')
+	  {
+		  $json['message'];
+	  }
+	  elseif ($json['type'] = 'success') {
+		   $json['message'];
+	  }
+	  else{
+		   $json = " not send";
+	  }
+
+
+	  if ($err) {
             echo "cURL Error #:" . $err;
           } else {
 
-          	
 			
-			$res1 = $response;
-					if($res1==true)
+					if($json['type'] = 'success')
 					{
-					$this->session->set_flashdata('success_send', $json['message']); 
+					// $this->session->set_flashdata('success_send', $json['message']); 
+						$this->session->set_flashdata('success_send', 'Reminder sms sent SMS sent successfully.'); 
 					}
 					else
 					{
 					$this->session->set_flashdata('error_send', $response);
 					
 					}	
-			// return redirect('admin/dashboard');
+			return redirect('admin/dashboard');
            
           }
 	
@@ -366,21 +369,44 @@ if(isset($_POST['task']) && $_POST['task']=="sendMsg"){
 	  }
  }
 
- 		public function getReg_no()
- 		{
- 	 
-	 	 $this->load->model('usersmodel','fetchReg_no');
-		  if($this->input->post('religion_id'))
-		  {
-		  	$output = $this->fetchReg_no->fetchReg_no($this->input->post('religion_id'));
-		   echo json_encode($output);
-		  }
- 		}
+	public function getReg_no()
+	{
+	
+		$this->load->model('usersmodel','fetchReg_no');
+		if($this->input->post('religion_id'))
+		{
+		$output = $this->fetchReg_no->fetchReg_no($this->input->post('religion_id'));
+		echo json_encode($output);
+		}
+	}
 
- 		public function getReg()
- 		{
- 			print_r($this->input->post());
- 		}
+	public function getReg()
+	{
+		$message = trim($this->input->post('message')) ?? null;
+		$mobile_nos = array();
+		
+		$this->load->model('usersmodel');
+		$customers = $this->usersmodel->fetchReg_no($this->input->post('religion'));
+		if(count($customers) > 0) {
+			foreach($customers as $cust) {
+				$mobile_nos[] = $cust->mobile;
+			}
+		} 
+		
+		if(!empty($message) && count($mobile_nos) > 0) {
+			$mobile_no_string = implode(',', $mobile_nos);
+			$sent = $this->send_sms($message, $mobile_no_string);			
+			if($sent) {
+				$this->session->set_flashdata('success', 'SMS sent successfully.');
+			} else {
+				$this->session->set_flashdata('error', 'SMS Gateway error. Please try again!');	
+			}
+		} else {
+			$this->session->set_flashdata('error', 'Message/Mobile no. cannot be empty.');
+
+		}
+		return redirect('admin/promo_sms');
+	}
 
 	public function user_info($id)
 	{
@@ -409,6 +435,50 @@ if(isset($_POST['task']) && $_POST['task']=="sendMsg"){
 		
 	}
 
+	private function send_sms($message, $mobile) {
+
+		$msg1 = json_encode($message);
+		$mobile_no = json_encode($mobile);
+
+		$curl = curl_init();
+
+		curl_setopt_array($curl, array(
+		  CURLOPT_URL => "https://api.msg91.com/api/v2/sendsms",
+		  CURLOPT_RETURNTRANSFER => true,
+		  CURLOPT_ENCODING => "",
+		  CURLOPT_MAXREDIRS => 10,
+		  CURLOPT_TIMEOUT => 30,
+		  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+		  CURLOPT_CUSTOMREQUEST => "POST",
+		  CURLOPT_POSTFIELDS => "{ \"sender\": \"SOCKET\", \"route\": \"4\", \"country\": \"91\", \"sms\": [ { \"message\": ".$msg1.", \"to\": [".$mobile."] } ] }",
+		  CURLOPT_SSL_VERIFYHOST => 0,
+		  CURLOPT_SSL_VERIFYPEER => 0,
+		  CURLOPT_HTTPHEADER => array(
+			"authkey: 323134AzdHLwxwWVZ5e6c5429P1",
+			"content-type: application/json"
+		  ),
+		));
+  
+	  $response = curl_exec($curl);
+	  $err = curl_error($curl);
+	  curl_close($curl);
+  
+	  $json = json_decode($response, true);
+  
+	  if($json['code'] = '106')
+	  {
+		  $json['message'];
+	  }
+	  elseif ($json['type'] = 'success') {
+		  $json['message'];
+	  }
+	  else{
+		  $json = " not send";
+	  }
+
+	  return $json;
+	}
+
 	public function Send_single($id)
 	{
 		$mobile = $this->input->post('mobile');
@@ -429,41 +499,41 @@ if(isset($_POST['task']) && $_POST['task']=="sendMsg"){
 
 
 		if(isset($_POST['submit'])){
-      $curl = curl_init();
+		$curl = curl_init();
 
-      curl_setopt_array($curl, array(
-        CURLOPT_URL => "https://api.msg91.com/api/v2/sendsms",
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_ENCODING => "",
-        CURLOPT_MAXREDIRS => 10,
-        CURLOPT_TIMEOUT => 30,
-        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-        CURLOPT_CUSTOMREQUEST => "POST",
-        CURLOPT_POSTFIELDS => "{ \"sender\": \"SOCKET\", \"route\": \"4\", \"country\": \"91\", \"sms\": [ { \"message\": ".$msg1.", \"to\": [".$mobile."] } ] }",
-        CURLOPT_SSL_VERIFYHOST => 0,
-        CURLOPT_SSL_VERIFYPEER => 0,
-        CURLOPT_HTTPHEADER => array(
-          "authkey: 323134AzdHLwxwWVZ5e6c5429P1",
-          "content-type: application/json"
-        ),
-      ));
+		curl_setopt_array($curl, array(
+			CURLOPT_URL => "https://api.msg91.com/api/v2/sendsms",
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_ENCODING => "",
+			CURLOPT_MAXREDIRS => 10,
+			CURLOPT_TIMEOUT => 30,
+			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+			CURLOPT_CUSTOMREQUEST => "POST",
+			CURLOPT_POSTFIELDS => "{ \"sender\": \"SOCKET\", \"route\": \"4\", \"country\": \"91\", \"sms\": [ { \"message\": ".$msg1.", \"to\": [".$mobile."] } ] }",
+			CURLOPT_SSL_VERIFYHOST => 0,
+			CURLOPT_SSL_VERIFYPEER => 0,
+			CURLOPT_HTTPHEADER => array(
+			"authkey: 323134AzdHLwxwWVZ5e6c5429P1",
+			"content-type: application/json"
+			),
+		));
 
-    $response = curl_exec($curl);
-    $err = curl_error($curl);
-    curl_close($curl);
+		$response = curl_exec($curl);
+		$err = curl_error($curl);
+		curl_close($curl);
 
-    $json = json_decode($response, true);
+		$json = json_decode($response, true);
 
-    if($json['code'] = '106')
-    {
-    	$json['message'];
-    }
-    elseif ($json['type'] = 'success') {
-    	$json['message'];
-    }
-    else{
-    	$json = " not send";
-    }
+		if($json['code'] = '106')
+		{
+			$json['message'];
+		}
+		elseif ($json['type'] = 'success') {
+			$json['message'];
+		}
+		else{
+			$json = " not send";
+		}
 
             
 
@@ -477,7 +547,8 @@ if(isset($_POST['task']) && $_POST['task']=="sendMsg"){
 			$res1 = $this->single_sms1->storeSingle_sms($id , $data);
 					if($res1==true)
 					{
-					$this->session->set_flashdata('success_send', $json['message']); 
+					// $this->session->set_flashdata('success_send', $json['message']); 
+						$this->session->set_flashdata('success_send', 'One2One SMS sent successfully.'); 
 					}
 					else
 					{
@@ -488,16 +559,6 @@ if(isset($_POST['task']) && $_POST['task']=="sendMsg"){
            
           }
 
-  }
-      
-
-
-		
-
-		
-	}
-
-
-	
-
+  		}      				
+	}	
 } 
