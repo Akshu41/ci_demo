@@ -310,15 +310,18 @@ if(isset($_POST['task']) && $_POST['task']=="sendMsg"){
 	  }
 
 
-	  if ($err) {
+ if ($err) 
+ {
             echo "cURL Error #:" . $err;
           } else {
 
 			
 					if($json['type'] = 'success')
 					{
+
 					// $this->session->set_flashdata('success_send', $json['message']); 
 						$this->session->set_flashdata('success_send', 'Reminder sms sent SMS sent successfully.'); 
+						//$this->session->set_flashdata('success_send', $response['message']); 
 					}
 					else
 					{
@@ -331,15 +334,7 @@ if(isset($_POST['task']) && $_POST['task']=="sendMsg"){
 	
 }
 
-					
-					
-
-
-
-
-
-
-	}
+}
 
 	public function delete_customer($id)
 	{
